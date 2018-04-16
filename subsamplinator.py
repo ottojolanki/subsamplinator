@@ -80,8 +80,8 @@ class SubsampledTokenStream(object):
                     offsets_tmp.append(mm.tell())
                 i += 1
                 if i % self.log_each == 0:
-                    print('{millions_of_tokens} million tokens scanned'.format(
-                        millions_of_tokens=(i / 1e6)))
+                    print('{millions_of_lines} million lines scanned'.format(
+                        millions_of_lines=(i / 1e6)))
         offsets = np.array(offsets_tmp, dtype='uint64')
         del offsets_tmp
         return offsets
