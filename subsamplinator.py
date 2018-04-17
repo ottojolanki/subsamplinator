@@ -5,8 +5,6 @@ Contains class SubsampledTokenStream that can stream N line tokens from
 an arbitrarily large files. Limiting factor is the array of
 memory offsets containing the start positions of tokens.
 '''
-import os
-import time
 import mmap
 import numpy as np
 from math import floor
@@ -31,7 +29,6 @@ class SubsampledTokenStream(object):
         np.random.seed(rnd_seed)
         self.source_file = source_file
         self.log_each = int(log_each)
-        self.file_size = os.path.getsize(source_file)
         self.sampling_rate = sampling_rate
         self.token_size = token_size
         # offsets is a numpy.array
