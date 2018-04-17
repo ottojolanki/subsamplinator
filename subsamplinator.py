@@ -86,15 +86,41 @@ class SubsampledTokenStream(object):
 
 
 def main(args):
-    pass
+    streamer = SubsampledTokenStream(
+        source_file=args.input_file,
+        sampling_rate=args.sampling_rate,
+        token_size=args.token_size,
+        rnd_seed=args.rnd_seed)
+    with open(args.output_filename, 'w+b') as f:
+        for token in streamer:
+            f.write(token)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--input_file', type=str, help='path to file you want to subsample')
+        '--input_file',
+        type=str,
+        required=True,
+        help='path to file you want to subsample')
     parser.add_argument(
         '--sampling_rate',
         type=float,
+        required=True,
         help='number between 0 and 1, the fraction of tokens you want to keep')
-    parser.add_argument('--token_size', type=int, required=False, help='')
+    parser.add_argument(
+        '--token_size',
+        type=int,
+        required=False,
+        default=4,
+        help='how many lines per token')
+    parser.add_argument(
+        '--rnd_seed',
+        type=int,
+        required=False,
+        default=123,
+        help='random seed')
+    parser.add_argument(
+        '--output_filename', type=str, required=True, help='output filename')
+    args = parser.parse_args()
+    main(args)
