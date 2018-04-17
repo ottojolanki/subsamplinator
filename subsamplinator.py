@@ -8,6 +8,7 @@ memory offsets containing the start positions of tokens.
 import mmap
 import numpy as np
 from math import floor
+import argparse
 
 
 class SubsampledTokenStream(object):
@@ -82,3 +83,18 @@ class SubsampledTokenStream(object):
         offsets = np.array(offsets_tmp, dtype='uint64')
         del offsets_tmp
         return offsets
+
+
+def main(args):
+    pass
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--input_file', type=str, help='path to file you want to subsample')
+    parser.add_argument(
+        '--sampling_rate',
+        type=float,
+        help='number between 0 and 1, the fraction of tokens you want to keep')
+    parser.add_argument('--token_size', type=int, required=False, help='')
