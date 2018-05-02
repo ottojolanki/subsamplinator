@@ -15,7 +15,7 @@ class SubsampledTokenStream(object):
     '''
     Stream tokens of N lines from a file. Assume that the
     total number of tokens is C, and sampling
-    rate is R, then C/R tokens will be given as result,
+    rate is R, then C*R tokens will be given as result,
     preserving the order of tokens.
     '''
 
