@@ -7,7 +7,6 @@ memory offsets containing the start positions of tokens.
 '''
 import mmap
 import numpy as np
-from math import floor
 import argparse
 
 
@@ -82,7 +81,7 @@ class SubsampledTokenStream(object):
                 if i % self.log_each == 0:
                     print('{millions_of_lines} million lines scanned'.format(
                         millions_of_lines=(i / 1e6)))
-        offsets = np.array(offsets_tmp, dtype='uint64')
+        offsets = np.array(offsets_tmp[:-1], dtype='uint64')
         del offsets_tmp
         return offsets
 
