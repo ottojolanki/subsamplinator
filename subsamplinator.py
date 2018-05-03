@@ -21,7 +21,7 @@ class SubsampledTokenStream(object):
 
     def __init__(self,
                  source_file,
-                 sampling_rate,
+                 number_of_output_tokens,
                  token_size=4,
                  offsets=None,
                  rnd_seed=123,
@@ -30,7 +30,7 @@ class SubsampledTokenStream(object):
         np.random.seed(rnd_seed)
         self.source_file = source_file
         self.log_each = int(log_each)
-        self.sampling_rate = sampling_rate
+        self.number_of_output_tokens = number_of_output_tokens
         self.token_size = token_size
         # offsets is a numpy.array
         if offsets:
@@ -60,11 +60,13 @@ class SubsampledTokenStream(object):
     def get_subsampling_mask(self):
         total_number_of_tokens = len(self.offsets)
         boolean_mask = np.empty(total_number_of_tokens, dtype=bool)
-        number_of_included_tokens = floor(
-            total_number_of_tokens * self.sampling_rate)
-        boolean_mask[:number_of_included_tokens] = True
-        boolean_mask[number_of_included_tokens:] = False
-        np.random.shuffle(boolean_mask)
+        number_of_included_tokens = self.number_of_output_tokens
+        if number_of_included_tokens > total_number_of_tokens:
+            raise IndexError('Too many tokens requested')
+        else:
+            boolean_mask[:number_of_included_tokens] = True
+            boolean_mask[number_of_included_tokens:] = False
+            np.random.shuffle(boolean_mask)
         return boolean_mask
 
     def scan_offsets(self):
@@ -88,7 +90,7 @@ class SubsampledTokenStream(object):
 def main(args):
     streamer = SubsampledTokenStream(
         source_file=args.input_file,
-        sampling_rate=args.sampling_rate,
+        number_of_output_tokens=args.number_of_output_tokens,
         token_size=args.token_size,
         rnd_seed=args.rnd_seed)
     with open(args.output_filename, 'w+b') as f:
@@ -104,10 +106,10 @@ if __name__ == '__main__':
         required=True,
         help='path to file you want to subsample')
     parser.add_argument(
-        '--sampling_rate',
+        '--number_of_output_tokens',
         type=float,
         required=True,
-        help='number between 0 and 1, the fraction of tokens you want to keep')
+        help='number of output tokens you want to get')
     parser.add_argument(
         '--token_size',
         type=int,
