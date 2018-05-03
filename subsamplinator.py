@@ -107,7 +107,7 @@ if __name__ == '__main__':
         help='path to file you want to subsample')
     parser.add_argument(
         '--number_of_output_tokens',
-        type=float,
+        type=int,
         required=True,
         help='number of output tokens you want to get')
     parser.add_argument(
