@@ -39,7 +39,7 @@ class TestSubsampledTokenStream(unittest.TestCase):
         self.assertTrue(
             np.all(
                 np.equal(streamer.offsets,
-                         np.array([0, 8, 16, 27], dtype='uint64'))))
+                         np.array([0, 8, 16], dtype='uint64'))))
 
     def tearDown(self):
         os.remove(TEST_FN)
