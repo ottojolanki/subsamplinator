@@ -66,8 +66,6 @@ class SubsampledTokenStream(object):
             boolean_mask[:number_of_included_tokens] = True
             boolean_mask[number_of_included_tokens:] = False
             np.random.shuffle(boolean_mask)
-        print(number_of_included_tokens)
-        print(total_number_of_tokens)
         return boolean_mask
 
     def scan_offsets(self):
